@@ -183,6 +183,7 @@ puppet module install puppetlabs-apache --version 3.2.0 #https://forge.puppet.co
 
 Crear archivo que servira para decirle a puppet como debe estar la infraestructura:
 ```
+cd ../manifests/ #/etc/puppetlabs/code/environments/production/manifests
 vim site.pp
 ```
 
