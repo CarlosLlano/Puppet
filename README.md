@@ -116,25 +116,41 @@ source ~/.bashrc
 En todas las maquinas, editar archivo /etc/hosts:
 ```
 vim /etc/hosts/ #agregar: <ip-address-puppet-master> puppet
+```
+
+En este caso, la ip de puppet-master es 192.168.0.17, por tanto:
+
+
+![captura de pantalla 2018-08-09 a la s 3 25 03 p m](https://user-images.githubusercontent.com/17281733/43925184-3309e232-9bec-11e8-8e6c-ae6c6429b74a.png)
+
+
+Comprobar conexión:
+```
 ping puppet
 ```
 
+
 **Firma de certificados**
 
-Desde el servidor, ver certificados pendientes de firmar:
+Desde el servidor, ver certificados pendientes de firmar (aquellos sin el signo +):
 ```
 puppet cert list --all
 ```
+
+![captura de pantalla 2018-08-09 a la s 3 33 43 p m](https://user-images.githubusercontent.com/17281733/43925223-508dd7d2-9bec-11e8-8a64-a685cf25bbdb.png)
+
 
 Firmar certificado del cliente:
 ```
 puppet cert sign puppet-client
 ```
 
+Comprobar firma:
 ```
 puppet cert list --all
 ```
 
+![captura de pantalla 2018-08-09 a la s 3 44 14 p m](https://user-images.githubusercontent.com/17281733/43925234-5f032704-9bec-11e8-8f79-edf53b780f87.png)
 
 **Crear modulo para configurar apache en el cliente**
 
@@ -166,7 +182,12 @@ Por defecto puppet agent pregunta por configuraciones cada 30 minutos (1800 segu
 puppet agent --configprint runinterval
 ```
 
-Para no esperar los 30 minutos, hacer una solicitud de configuracion desde el cliente:
+
+![captura de pantalla 2018-08-09 a la s 3 46 33 p m](https://user-images.githubusercontent.com/17281733/43925327-94b5e260-9bec-11e8-88b0-9f0fa10f61ec.png)
+
+
+
+Para no esperar los 30 minutos, hacer una solicitud directa de configuracion desde el cliente:
 ```
 puppet agent -t --debug
 ```
