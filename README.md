@@ -5,7 +5,7 @@
 vagrant up
 ```
 
-**Configuracion del servidor**
+**Configuración del servidor**
 
 Cambiar hostname a puppet-master:
 ```
@@ -73,7 +73,7 @@ export PATH=$PATH:/opt/puppetlabs/bin/
 source ~/.bashrc
 ```
 
-**Configuracion del cliente**
+**Configuración del cliente**
 
 Cambiar hostname a puppet-client:
 ```
@@ -193,11 +193,14 @@ node 'puppet-client.local' {
 }
 ```
 
-**Solicitar configuracion desde el cliente**
+**Solicitar configuración desde el cliente**
 ```
 puppet agent -t  --server=puppet-master.local --debug
 ```
 
-puppet agent realiza la configuracion requerida (apache) instalando todos los paquetes necesarios. Despues de unos segundos se puede comprobar la instalación de apache en el navegador con la ip del cliente:
+puppet agent realiza la configuración requerida (apache) instalando todos los paquetes necesarios. Despues de unos segundos se puede comprobar la instalación de apache en el navegador con la ip del cliente:
 
 ![captura de pantalla 2018-08-08 a la s 11 36 17 p m](https://user-images.githubusercontent.com/17281733/43913755-8d3bf496-9bcb-11e8-91a2-cac7b79729f2.jpg)
+
+# RECURSOS #
+* open source modules - https://forge.puppet.com/
