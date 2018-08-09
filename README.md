@@ -19,12 +19,6 @@ sudo su
 hostname #verificar cambio de hostname
 ```
 
-Crear un FQDN (fully qualified Domain name):
-```
-ifconfig #determinar ip address
-vi /etc/hosts #agregar linea: <ip-address> puppet-master.local puppet-master
-hostname -f #comprobar fqdn
-```
 
 Agregar repositorio para descarga de puppet:
 ```
@@ -87,13 +81,6 @@ sudo su
 hostname #verificar cambio de hostname
 ```
 
-Crear un FQDN (fully qualified Domain name):
-```
-ifconfig #determinar ip address
-vi /etc/hosts #agregar linea: <ip-address> puppet-client.local puppet-client
-hostname -f #comprobar fqdn
-```
-
 Agregar repositorio para descarga de puppet:
 ```
 curl -O https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
@@ -126,49 +113,27 @@ source ~/.bashrc
 
 **Configuración para comunicacion entre servidor y cliente**
 
-En el servidor (puppet_master):
+En todas las maquinas, editar archivo /etc/hosts:
 ```
-vim /etc/hosts/ #agregar: <ip-address-client> puppet-client.local puppet-client
-ping puppet-client.local
-```
-
-En el cliente (puppet_client):
-```
-vim /etc/hosts/ #agregar: <ip-address-master> puppet-master.local puppet-master
-ping puppet-master.local
+vim /etc/hosts/ #agregar: <ip-address-puppet-master> puppet
+ping puppet
 ```
 
 **Firma de certificados**
-
-Desde el cliente:
-```
-puppet agent -t  --server=puppet-master.local
-```
-
-![captura de pantalla 2018-08-08 a la s 10 49 00 p m](https://user-images.githubusercontent.com/17281733/43913242-2a8fd598-9bca-11e8-87a8-ea3f160c3454.png)
-
 
 Desde el servidor, ver certificados pendientes de firmar:
 ```
 puppet cert list --all
 ```
 
-![captura de pantalla 2018-08-08 a la s 10 52 35 p m](https://user-images.githubusercontent.com/17281733/43913266-3a0280b6-9bca-11e8-926c-7dede440afc3.png)
-
-
 Firmar certificado del cliente:
 ```
-puppet cert sign puppet-client.local
+puppet cert sign puppet-client
 ```
-![captura de pantalla 2018-08-08 a la s 10 54 24 p m](https://user-images.githubusercontent.com/17281733/43913304-4f1f3b42-9bca-11e8-9a3d-b6712b49f619.png)
-
 
 ```
 puppet cert list --all
 ```
-
-
-![captura de pantalla 2018-08-08 a la s 10 54 45 p m](https://user-images.githubusercontent.com/17281733/43913360-628faf86-9bca-11e8-9788-44570c19bd3d.png)
 
 
 **Crear modulo para configurar apache en el cliente**
@@ -189,14 +154,21 @@ vim site.pp
 
 Agregar lineas:
 ```ruby
-node 'puppet-client.local' {
+node 'puppet-client' {
     include apache
 }
 ```
 
 **Solicitar configuración desde el cliente**
+
+Por defecto puppet agent pregunta por configuraciones cada 30 minutos (1800 segundos), como lo declara la variable runinterval:
 ```
-puppet agent -t  --server=puppet-master.local --debug
+puppet agent --configprint runinterval
+```
+
+Para no esperar los 30 minutos, hacer una solicitud de configuracion desde el cliente:
+```
+puppet agent -t --debug
 ```
 
 puppet agent realiza la configuración requerida (apache) instalando todos los paquetes necesarios. Despues de unos segundos se puede comprobar la instalación de apache en el cliente. Para ello, digitar la direccion ip del cliente en el navegador:
