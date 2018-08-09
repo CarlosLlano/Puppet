@@ -43,6 +43,10 @@ Configurar memoria RAM a 3gb:
 vim /etc/default/puppetserver 
 ```
 
+![captura de pantalla 2018-08-08 a la s 10 11 22 p m](https://user-images.githubusercontent.com/17281733/43913154-e70f0b68-9bc9-11e8-9bc3-9c01a59efdf1.png)
+
+
+
 Habilitar puerto de puppet:
 ```
 ufw allow 8140
@@ -58,6 +62,9 @@ Comprobar estado:
 ```
 systemctl status puppetserver
 ```
+
+![captura de pantalla 2018-08-08 a la s 10 15 17 p m](https://user-images.githubusercontent.com/17281733/43913184-f9d2b3da-9bc9-11e8-8870-7b4d61d6d4f0.png)
+
 
 Cambiar path:
 ```
@@ -117,7 +124,7 @@ export PATH=$PATH:/opt/puppetlabs/bin/
 source ~/.bashrc
 ```
 
-**Configuracion para comunicacion entre servidor y cliente**
+**Configuración para comunicacion entre servidor y cliente**
 
 En el servidor (puppet_master):
 ```
@@ -138,16 +145,31 @@ Desde el cliente:
 puppet agent -t  --server=puppet-master.local
 ```
 
+![captura de pantalla 2018-08-08 a la s 10 49 00 p m](https://user-images.githubusercontent.com/17281733/43913242-2a8fd598-9bca-11e8-87a8-ea3f160c3454.png)
+
+
 Desde el servidor, ver certificados pendientes de firmar:
 ```
 puppet cert list --all
 ```
 
+![captura de pantalla 2018-08-08 a la s 10 52 35 p m](https://user-images.githubusercontent.com/17281733/43913266-3a0280b6-9bca-11e8-926c-7dede440afc3.png)
+
+
 Firmar certificado del cliente:
 ```
 puppet cert sign puppet-client.local
+```
+![captura de pantalla 2018-08-08 a la s 10 54 24 p m](https://user-images.githubusercontent.com/17281733/43913304-4f1f3b42-9bca-11e8-9a3d-b6712b49f619.png)
+
+
+```
 puppet cert list --all
 ```
+
+
+![captura de pantalla 2018-08-08 a la s 10 54 45 p m](https://user-images.githubusercontent.com/17281733/43913360-628faf86-9bca-11e8-9788-44570c19bd3d.png)
+
 
 **Crear modulo para configurar apache en el cliente**
 
@@ -175,3 +197,7 @@ node 'puppet-client.local' {
 ```
 puppet agent -t  --server=puppet-master.local --debug
 ```
+
+puppet agent realiza la configuracion requerida (apache) instalando todos los paquetes necesarios. Despues de unos segundos se puede comprobar la instalación de apache en el navegador con la ip del cliente:
+
+![captura de pantalla 2018-08-08 a la s 11 36 17 p m](https://user-images.githubusercontent.com/17281733/43913755-8d3bf496-9bcb-11e8-91a2-cac7b79729f2.jpg)
